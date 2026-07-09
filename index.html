@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>요양보호사 기출 퀴즈 2 | 복습왕</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#f5f4f0;min-height:100vh;padding:1.25rem 1rem}
+#app{width:100%;max-width:480px;margin:0 auto}
+.screen{display:none}
+.screen.active{display:block}
+
+.start-card{background:#fff;border-radius:16px;padding:2rem 1.5rem;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.start-icon{font-size:48px;margin-bottom:1rem}
+.start-title{font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:.5rem}
+.start-sub{font-size:15px;color:#666;line-height:1.6;margin-bottom:.25rem}
+.start-badge{display:inline-block;margin:1rem 0 1.5rem;padding:.35rem .9rem;background:#fff3f3;color:#c0392b;border-radius:20px;font-size:13px;font-weight:600}
+.btn-primary{width:100%;padding:.9rem;background:#c0392b;color:#fff;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer}
+.btn-primary:active{background:#a93226}
+
+.quiz-header{margin-bottom:1rem}
+.progress-bar{height:6px;background:#e8e5e0;border-radius:3px;margin-bottom:.75rem}
+.progress-fill{height:100%;background:#c0392b;border-radius:3px;transition:width .3s}
+.q-meta{display:flex;justify-content:space-between}
+.q-counter{font-size:13px;color:#888;font-weight:500}
+.q-score{font-size:13px;color:#c0392b;font-weight:700}
+
+.q-card{background:#fff;border-radius:16px;padding:1.25rem;margin-bottom:.75rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q-text{font-size:16px;font-weight:500;color:#1a1a1a;line-height:1.75;white-space:pre-line}
+
+.options{display:flex;flex-direction:column;gap:.55rem;margin-bottom:.75rem}
+.opt{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;background:#fff;border:2px solid #e5e2dd;border-radius:12px;cursor:pointer;text-align:left;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.opt:active{background:#fff0ef;border-color:#c0392b}
+.opt-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#f5f4f0;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#666}
+.opt-text{font-size:15px;color:#222;line-height:1.55;padding-top:4px}
+
+.opt.correct{background:#eafaf1;border-color:#27ae60}
+.opt.correct .opt-num{background:#27ae60;border-color:#27ae60;color:#fff}
+.opt.wrong{background:#fff5f5;border-color:#e74c3c}
+.opt.wrong .opt-num{background:#e74c3c;border-color:#e74c3c;color:#fff}
+.opt.disabled{pointer-events:none}
+.opt.dim{opacity:.35}
+
+.feedback{padding:.85rem 1rem;border-radius:12px;margin-bottom:.75rem;font-size:14px;line-height:1.65;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:#eafaf1;color:#1a7a3e;border:1.5px solid #a9dfbf}
+.feedback.bad{background:#fdedec;color:#b03a2e;border:1.5px solid #f5b7b1}
+
+.btn-next{width:100%;padding:.9rem;background:#c0392b;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:none;touch-action:manipulation}
+.btn-next.show{display:block}
+.btn-next:active{background:#a93226}
+
+.result-card{background:#fff;border-radius:16px;padding:2rem 1.5rem;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:1rem}
+.result-emoji{font-size:44px;margin-bottom:.75rem}
+.score-row{display:flex;align-items:baseline;justify-content:center;gap:.25rem;margin-bottom:.4rem}
+.score-big{font-size:54px;font-weight:700;color:#c0392b}
+.score-denom{font-size:20px;color:#888;font-weight:500}
+.score-pct{font-size:15px;color:#aaa;margin-bottom:.85rem}
+.score-msg{font-size:15px;color:#555;line-height:1.65}
+.wrong-summary{background:#fff5f5;border:1.5px solid #f5b7b1;border-radius:12px;padding:.85rem 1rem;margin-bottom:1rem;font-size:14px;color:#b03a2e;line-height:1.75}
+.result-actions{display:flex;flex-direction:column;gap:.6rem}
+.btn-sec{width:100%;padding:.9rem;background:#fff;color:#333;border:2px solid #ddd;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation}
+.btn-sec:active{background:#f5f4f0}
+.yt-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.9rem;background:#ff0000;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;touch-action:manipulation}
+.yt-btn:active{background:#cc0000}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="start" class="screen active">
+    <div class="start-card">
+      <div class="start-icon">📋</div>
+      <div class="start-title">요양보호사 기출 퀴즈 2</div>
+      <div class="start-sub">선택지를 눌러 정답을 맞혀보세요</div>
+      <div class="start-badge">총 35문제 · 요양보호 실무 종합</div>
+      <button class="btn-primary" id="startBtn">퀴즈 시작하기</button>
+    </div>
+  </div>
+
+  <div id="quiz" class="screen">
+    <div class="quiz-header">
+      <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+      <div class="q-meta">
+        <span class="q-counter" id="counter"></span>
+        <span class="q-score" id="liveScore"></span>
+      </div>
+    </div>
+    <div class="q-card"><div class="q-text" id="qtext"></div></div>
+    <div class="options" id="opts"></div>
+    <div class="feedback" id="fb"></div>
+    <button class="btn-next" id="nextbtn">다음 문제 →</button>
+  </div>
+
+  <div id="result" class="screen">
+    <div class="result-card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="score-row">
+        <span class="score-big" id="scoreNum"></span>
+        <span class="score-denom" id="scoreDenom"></span>
+      </div>
+      <div class="score-pct" id="scorePct"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+    <div id="wrongSummary"></div>
+    <div class="result-actions">
+      <button class="btn-sec" id="retryWrong" style="display:none">틀린 문제만 다시 풀기</button>
+      <button class="btn-sec" id="restartBtn">처음부터 다시 풀기</button>
+      <a class="yt-btn" href="https://www.youtube.com/@복습왕" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        복습왕 유튜브 채널 바로가기
+      </a>
+    </div>
+  </div>
+
+</div>
+<script>
+var ALL_QS=[
+  {q:"다음 사례에서 볼 수 있는 노인학대의 유형은?\n\n홍씨 할머니의 자녀들이 경제적인 능력이 없는 어르신의 요양원 입소비용을 지원하지 않아 요양원으로부터 독촉을 받고 있다.",opts:["유기","방임","경제적 학대","정서적 학대","신체적 학대"],ans:1},
+  {q:"요양보호사의 직무스트레스 및 우울증에 대한 자기관리 방법은?",opts:["직무스트레스는 본인이 인식하지 못한다.","직무스트레스가 심하면 퇴사해야 한다.","가족이나 친구에게 상담해도 도움이 안 된다.","봉사하는 마음가짐을 갖고 마음을 다스린다.","자신의 생각을 변화시켜 상황을 긍정적으로 인지한다."],ans:4},
+  {q:"폐결핵에 관한 설명으로 옳은 것은?",opts:["바이러스성 감염 질환이다.","스테로이드 약물 복용으로 예방할 수 있다.","약물 투여로 인한 위장장애, 발진, 발열 등의 부작용을 관찰한다.","증상이 좋아지면 점점 약물 복용 횟수를 줄인다.","오전에 고열이 나고 오후에 열이 내리는 증상이 반복된다."],ans:2},
+  {q:"다음 중 사례 관리 과정에 해당하는 순서로 옳은 것은?\n\n접수 및 초기 면접 → 욕구사정 → 사례회의 1차 → 급여제공계획서 작성 및 통보 → (      ) → 모니터링 → 사례회의 2차 → 평가 종결",opts:["방문상담","서비스제공계획 수립","제공내용 통보","서비스 제공","공단통보"],ans:3},
+  {q:"경관영양 주입 시 대상자에게 청색증이 있을 경우 가장 먼저 해야 할 요양보호사의 대처 방법은?",opts:["비위관을 잠근다.","비위관을 제거한다.","비위관이 꼬여 있는지 확인한다.","영양액 주입 속도를 조절한다.","따뜻한 영양액으로 교체한다."],ans:0},
+  {q:"남성 대상자의 회음부를 청결하게 하는 방법으로 옳은 것은?",opts:["회음부를 뒤쪽에서 앞쪽으로 닦는다.","음경을 수건으로 잡고 음낭의 뒷면도 닦아준다.","둔부 밑에 변기를 넣은 다음 그 아래에 방수포를 깐다.","앉아서 다리를 벌리고 무릎을 세운 상태에서 닦는다.","목욕담요를 마름모꼴로 펴서 대상자의 무릎 아래를 덮는다."],ans:1},
+  {q:"왼쪽 편마비 대상자를 일으켜 세울 때 돕는 방법은?",opts:["앞에서 도울 때 양발을 무릎보다 살짝 안쪽에 놓는다.","옆에서 도울 때 대상자의 오른쪽에 서서 도와준다.","앞에서 도울 때 대상자의 왼쪽 무릎 옆쪽에 대고 지지해준다.","옆에서 도울 때 오른쪽 대퇴부와 왼쪽 허리를 잡고 지지해 준다.","앞에서 도울 때 대상자의 어깨와 허리를 지지해 준다."],ans:0},
+  {q:"다음 중 복지용구의 대여품목에 해당되는 것은?",opts:["목욕 의자","이동변기","안전손잡이","배회감지기","자세변환 용구"],ans:3},
+  {q:"대상자가 먹기 쉽게 조리하는 방법은?",opts:["단단한 식재료는 크게 잘라서 사용한다.","튀김 옷 반죽할 때 물을 조금만 넣는다.","육류는 결 방향으로 자른다.","비빔밥에 계란후라이를 올려드린다.","약간 국물이 있거나 촉촉하게 조리한다."],ans:4},
+  {q:"재가 대상자의 냉장고에서 상한 계란찜을 발견했을 때 올바른 대처 방법은?",opts:["재 가열하여 먹을 수 있도록 한다.","가능한 빨리 섭취하도록 권유한다.","즉시 폐기한 후 나중에 대상자에게 설명한다.","냉장고 온도와 다른 음식 상태를 점검한다.","상한 부분만 버리고 다시 냉장 보관한다."],ans:3},
+  {q:"치매대상자의 식사를 돕는 방법으로 옳은 것은?",opts:["대상자와 함께 생선 가시를 바른다.","투명한 유리 접시에 음식을 담아 준다.","의치가 느슨하면 의치를 빼고 식사하게 한다.","평소 좋아하는 드라마를 보면서 식사하게 한다.","식탁 위에 소금을 놔두고 간을 스스로 맞추게 한다."],ans:2},
+  {q:"시설 치매대상자가 휠체어에 앉아 있는 대상자에게 화를 내며 끌어내리려고 할 때 대처방법은?",opts:["휠체어를 타고 싶은지 물어본다.","다른 휠체어를 갖다 주겠다며 찾으러 간다.","더 좋은 휠체어를 타러 가자며 데리고 나간다.","위험한 행동을 하면 집으로 돌려보낸다고 말한다.","두 사람이 모두 다칠 수 있다며 힘으로 제압한다."],ans:2},
+  {q:"치매대상자가 개구리 울음소리를 들으면서 어린 시절 이야기를 할 때 향상될 수 있는 인지능력은?",opts:["기억력","집중력","지남력","주의력","사고력"],ans:2},
+  {q:"심폐소생술을 할 때 가슴을 압박하는 방법으로 옳은 것은?",opts:["분당 80회 속도로 가슴을 압박한다.","복장뼈의 하단 칼돌기를 직접 압박한다.","매 압박 시 압박 위치가 바뀌지 않게 한다.","가슴이 3cm 정도 눌리도록 약하게 압박한다.","가슴압박하기 전에 등 밑에 쿠션을 깔아준다."],ans:2},
+  {q:"대상자가 급성저혈압으로 쓰러졌을 때 대처방법은?",opts:["호흡을 빨리 하도록 격려한다.","옆으로 누운 자세를 취해 준다.","비상약으로 혈액순환 촉진제를 투여한다.","손발을 마사지 해준다.","발 아래 베개를 받쳐서 다리가 30cm 올라가도록 한다."],ans:4},
+  {q:"홍수로 인해 수해가 발생했을 때 대처방법은?",opts:["가스 밸브를 열어 개통상태를 점검한다.","물이 집 안으로 밀려오는 경우 모래주머니로 막는다.","밀려온 물이 집 안에서 빠진 직후 전기차단기를 올린다.","홍수로 밀려온 물에 몸이 젖은 경우 수건으로 닦는다.","집 안의 물이 빠지고 나면 라이터를 사용하여 불을 켠다."],ans:1},
+  {q:"치매대상자가 저녁 8시가 되면 불안해하면서 자꾸 집에 간다고 밖으로 나가려고 할 때 대처방법으로 옳은 것은?",opts:["낮잠을 자게 한다.","조용히 혼자 있도록 한다.","따뜻한 음료수를 제공한다.","소음을 차단하기 위해 텔레비전을 끈다.","조명을 어둡게 하여 마음을 안정시킨다."],ans:2},
+  {q:"식기 및 주방 위생관리 방법으로 옳은 것은?",opts:["냉장고는 주 1회 청소한다.","올바른 식기 세척은 음식물을 제거하고 소독한 후에 행구고 건조시키는 순이다.","곰팡이 차단을 위해 찬장을 자주 열지 않는다.","스폰지는 그물형보다 스폰지형이 더 좋다.","고무장갑은 조리용과 비조리용을 구분하여 사용한다."],ans:4},
+  {q:"지팡이를 이용하여 보행하는 대상자를 돕는 방법으로 옳은 것은?",opts:["지팡이의 끝을 발끝에 놓이게 한다.","불편한 쪽 손에 지팡이를 쥐게 한다.","옆에서 보조할 때는 지팡이를 쥐지 않은 옆쪽에 선다.","계단을 오를 때는 지팡이보다 건강한 쪽 다리를 먼저 올린다.","뒤에서 보조할 때는 대상자의 뒤에서 손으로 대상자의 팔을 잡는다."],ans:2},
+  {q:"대상자를 휠체어에서 침대 위로 옮길 때 요양보호사의 신체 손상을 예방하는 방법은?",opts:["척추 안정성을 높이기 위해 양발을 모아서 균형을 잡는다.","대상자와 일정한 거리를 두고 들어 이동시킨다.","허리를 굽히고 양다리에 체중을 실어 들어 올린다.","방향 전환 시에 건강한 다리를 축으로 하여 몸통을 돌린다.","한 발은 다른 발보다 뒤에 놓아 지지면을 넓힌다."],ans:3},
+  {q:"유치도뇨관을 삽입하고 있는 대상자의 복부가 팽만되어 있을 때 요양보호사의 대처 방법은?",opts:["소변이 잘 흐르는지 확인한다.","체위를 변경해준다.","간호사에게 보고한다.","복부 둘레를 측정한다.","복부에 차가운 수건을 대준다."],ans:0},
+  {q:"경관영양 대상자를 오른쪽으로 돌려 눕히는 이유로 옳은 것은?",opts:["소화가 잘 되도록 하기 위해서","비위관이 꺾이지 않도록 하기 위해서","영양액 주입 속도를 조절하기 위해서","기도로 역류하는 것을 방지하기 위해서","대상자에게 편안한 자세를 유지하기 위해서"],ans:3},
+  {q:"다음 피부질환에 대한 설명으로 올바른 것은?",opts:["대상포진은 물집이 나타난 후 심한 통증이 나타난다.","기저귀 습진, 지루성피부염 치료로 스테로이드 연고를 발라준다.","천골부위 욕창예방을 위해 도넛 모양의 베개를 사용한다.","옴 대상자의 의복은 뜨거운 물로 세탁 후 바로 입는다.","노인성자반은 위안부 여성들이 우정문신을 한 부위에 발생된다."],ans:1},
+  {q:"안압의 상승으로 시신경이 손상되었을 때 나타나는 증상은?",opts:["낮에 눈부심이 심함","동공의 백색 혼탁","어두움에 적응장애","통증이 없는 시력감소","불빛 주위에 무지개가 보임"],ans:2},
+  {q:"치매대상자가 야간에 초조한 표정으로 이리저리 배회할 때 돕는 방법은?",opts:["TV를 크게 틀어 관심을 돌린다.","집안을 어둡게 하여 수면 시간임을 알린다.","방을 밝게 하고 따뜻하게 해준다.","침대 옆에 옷가지를 걸어 정서적인 안정감을 준다.","대상자가 불안하지 않도록 출입문을 열어둔다."],ans:2},
+  {q:"치매대상자가 놀이 치료 중 다른 대상자에게 욕설을 하거나 소리를 지를 때 대처방법으로 옳은 것은?",opts:["힘으로 제압한다.","다른 곳으로 이동한다.","스스로 화가 풀릴 때까지 둔다.","빠르게 관심을 다른 곳으로 유도한다.","온화하고 부드럽게 진정시킨다."],ans:4},
+  {q:"치매대상자에게 안전한 환경을 조성하는 방법은?",opts:["세제는 사용하기 편하도록 욕실바닥에 놓는다.","화장실 문은 안에서 잠글 수 있게 한다.","난간에 어두운 색 테이프를 붙여 놓는다.","평소 복용하는 약은 침상 가까이에 둔다.","차 안에서 열지 못하도록 잠금장치를 한다."],ans:4},
+  {q:"호스피스, 완화의료 서비스를 받을 수 있는 대상자로 옳은 것은?",opts:["췌장암 진단을 받은 말기암 대상자","급성간경화로 치료 중에 있는 대상자","혈액투석을 받고 있는 만성신부전증 대상자","뇌졸중으로 의식이 없는 대상자","일상생활이 어려운 치매말기 대상자"],ans:0},
+  {q:"노인성질환과 증상이 옳게 연결된 것은?",opts:["어두운 곳에서 일을 하면 안 되는 질환 - 백내장","고혈압의 합병증으로 올 수 있는 질환 - 녹내장","정기적으로 간 기능검사를 해야 되는 질환 - 천식","근육 스트레칭 및 관절운동이 필요한 질환 - 퇴행성관절염","항상 단호하고 부드러운 목소리로 말한다. - 섬망"],ans:4},
+  {q:"과거 편안했던 기억을 떠올리기도 하고, 복식호흡을 천천히 하며 '편해', '쉬어' 등의 단어를 천천히 속으로 반복하는 직무스트레스 해소 방법은?",opts:["호흡법","심상훈련","인지수정","긴장이완","인내하기"],ans:1},
+  {q:"위궤양 대상자를 돕는 방법으로 옳은 것은?",opts:["염장식품을 골고루 섭취한다.","흡연자이면 담배를 1일 4~5개로 줄인다.","자기 전에 따뜻한 녹차를 마시게 한다.","진통제 복용 시 점막 보호제를 함께 복용한다.","위 천공, 위 협착 증상이 있으면 절대 안정을 취한다."],ans:3},
+  {q:"치매대상자가 한 가지 옷만 입겠다고 고집을 부릴 때 대처방법은?",opts:["강제로 옷을 갈아입힌다.","옷이 너무 더럽다고 알려준다.","가족에게 동일한 유형의 옷을 구입하도록 하여 입게 한다.","옷을 갈아입어야 하는 이유를 설명한다.","기분 전환을 위해 여러 가지 옷을 골고루 입어보자고 한다."],ans:2},
+  {q:"노인장기요양보험제도에 관한 설명으로 옳은 것은?",opts:["등급 판정은 신청한 날로부터 90일 이내에 완료한다.","장기요양보험사업은 보건복지부장관이 관장한다.","단기보호는 시설급여에 해당한다.","장기요양등급은 1등급에서 5등급까지이다.","장기요양기관장이 신청인의 거주지에 가서 방문조사 한다."],ans:1},
+  {q:"2022년 3월에 1등급 판정을 받고, 2024년 3월에 2등급으로 대상자의 상태가 호전되었다. 이때 유효기간은?",opts:["1년","2년","3년","4년","5년"],ans:3},
+  {q:"손이 불편하신 어르신을 위해 대필을 해드렸다. 이에 해당하는 노인장기요양보험 표준서비스 유형은?",opts:["정서지원서비스","개인활동지원서비스","치매관리지원서비스","신체활동지원서비스","일상생활지원서비스"],ans:0},
+  {q:"장기요양인정서에 포함되는 내용으로 옳은 것은?",opts:["본인부담금","재가급여 월한도액","장기요양 이용 계획","장기요양급여 종류와 내용","보호자의 기본 인적사항"],ans:3}
+];
+
+var questions=[],current=0,wrongIdx=[],isRetry=false,correctCount=0;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startQuiz(retryOnly){
+  isRetry=retryOnly;
+  questions=retryOnly?wrongIdx.map(function(i){return ALL_QS[i];}):ALL_QS.slice();
+  current=0;wrongIdx=[];correctCount=0;
+  show('quiz');renderQ();
+}
+
+function renderQ(){
+  var q=questions[current],total=questions.length;
+  var nums=['①','②','③','④','⑤'];
+  document.getElementById('prog').style.width=(Math.round(current/total*100))+'%';
+  document.getElementById('counter').textContent=(current+1)+' / '+total;
+  document.getElementById('liveScore').textContent='정답 '+correctCount+'개';
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('fb').className='feedback';
+  document.getElementById('fb').textContent='';
+  document.getElementById('nextbtn').className='btn-next';
+  var c=document.getElementById('opts');
+  c.innerHTML='';
+  q.opts.forEach(function(o,i){
+    var d=document.createElement('div');
+    d.className='opt';
+    d.setAttribute('role','button');
+    d.setAttribute('tabindex','0');
+    d.innerHTML='<span class="opt-num">'+nums[i]+'</span><span class="opt-text">'+o+'</span>';
+    d.addEventListener('touchend',function(e){e.preventDefault();pick(i);});
+    d.addEventListener('click',function(){pick(i);});
+    c.appendChild(d);
+  });
+}
+
+function pick(i){
+  var q=questions[current];
+  var opts=document.querySelectorAll('.opt');
+  opts.forEach(function(o,idx){
+    o.style.pointerEvents='none';
+    o.classList.add('disabled');
+    if(idx===q.ans)o.classList.add('correct');
+    else if(idx===i&&i!==q.ans)o.classList.add('wrong');
+    else if(idx!==q.ans)o.classList.add('dim');
+  });
+  var fb=document.getElementById('fb');
+  var nb=document.getElementById('nextbtn');
+  if(i===q.ans){
+    fb.className='feedback ok show';
+    fb.textContent='✓ 정답입니다!';
+    correctCount++;
+  } else {
+    fb.className='feedback bad show';
+    fb.textContent='✗ 오답! 정답은 '+['①','②','③','④','⑤'][q.ans]+' '+q.opts[q.ans];
+    if(!isRetry){var orig=ALL_QS.indexOf(q);if(wrongIdx.indexOf(orig)===-1)wrongIdx.push(orig);}
+  }
+  nb.className='btn-next show';
+  nb.textContent=current+1<questions.length?'다음 문제 →':'결과 보기 →';
+}
+
+function nextQ(){
+  current++;
+  if(current<questions.length)renderQ();
+  else showResult();
+}
+
+function showResult(){
+  show('result');
+  var total=questions.length,correct=correctCount;
+  var pct=Math.round(correct/total*100);
+  document.getElementById('scoreNum').textContent=correct;
+  document.getElementById('scoreDenom').textContent=' / '+total+'문제';
+  document.getElementById('scorePct').textContent='정답률 '+pct+'%';
+  var emoji='',msg='';
+  if(pct===100){emoji='🏆';msg='완벽합니다! 모든 문제를 맞혔어요!';}
+  else if(pct>=80){emoji='😊';msg='훌륭해요! 조금만 더 복습하면 완벽해요.';}
+  else if(pct>=60){emoji='🙂';msg='절반 이상 맞혔어요. 틀린 문제를 다시 풀어보세요!';}
+  else{emoji='💪';msg='더 많은 복습이 필요해요. 포기하지 마세요!';}
+  document.getElementById('resultEmoji').textContent=emoji;
+  document.getElementById('scoreMsg').textContent=msg;
+  var ws=document.getElementById('wrongSummary'),rw=document.getElementById('retryWrong');
+  if(wrongIdx.length>0&&!isRetry){
+    ws.innerHTML='<div class="wrong-summary">틀린 문제: '+wrongIdx.map(function(i){return 'Q'+(i+1);}).join(', ')+'<br>틀린 문제만 다시 풀어 완벽하게 마무리해보세요!</div>';
+    rw.style.display='block';
+  } else {ws.innerHTML='';rw.style.display='none';}
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('startBtn').addEventListener('touchend',function(e){e.preventDefault();startQuiz(false);});
+  document.getElementById('startBtn').addEventListener('click',function(){startQuiz(false);});
+  document.getElementById('nextbtn').addEventListener('touchend',function(e){e.preventDefault();nextQ();});
+  document.getElementById('nextbtn').addEventListener('click',function(){nextQ();});
+  document.getElementById('retryWrong').addEventListener('touchend',function(e){e.preventDefault();startQuiz(true);});
+  document.getElementById('retryWrong').addEventListener('click',function(){startQuiz(true);});
+  document.getElementById('restartBtn').addEventListener('touchend',function(e){e.preventDefault();startQuiz(false);});
+  document.getElementById('restartBtn').addEventListener('click',function(){startQuiz(false);});
+});
+</script>
+</body>
+</html>
